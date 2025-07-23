@@ -6,15 +6,25 @@ def roman_converter(num):
         return None
     
     ROMAN_NUMS = [
+        (1000, "M"),
+        (900, "CM"),
+        (500, "D"),
+        (400, "CD"),
+        (100, "C"),
+        (90, "XC"),
+        (50,"L"),
+        (40, "XL"),
+        (10, "X"),
+        (9, "IX"),
+        (5, "V"),
+        (4, "IV"),
         (1, "I")
     ]
 
     out = ''
-    while num >= 5:
-        out += 'V'
-        num -= 5
-    while num >= 1:
-        out += 'I'
-        num -= 1
-
+    for values, symbols in ROMAN_NUMS:
+        
+        while num >= values:
+            out += symbols
+            num -= values
     return out
