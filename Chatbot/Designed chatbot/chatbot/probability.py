@@ -6,7 +6,6 @@ except ImportError:
 import random
 
 colors = ["blue", "red", "green", "yellow", "purple", "pink"]
-hearts = ["💙", "❤️", "💚", "💛", "💜", "🩷"]
 
 def favorite_color_response():
     idx = random.randint(0, len(colors) - 1)
@@ -15,7 +14,7 @@ def favorite_color_response():
 RULES = [
     {
         "keywords": ["hello", "hi", "hey", "salut"],
-        "response": "Hello! 😊",
+        "response": "Hello! ",
         "single_response": True
     },
     {
@@ -26,12 +25,12 @@ RULES = [
     {
         "keywords": ["what", "is", "your", "name"],
         "required": ["name"],
-        "response": "I'm CodePal, your friendly chatbot 🤖"
+        "response": "I'm CodePal, your friendly chatbot "
     },
     {
         "keywords": ["i", "love", "code", "palace"],
         "required": ["code"],
-        "response": "Thank you! ❤️"
+        "response": "Thank you! "
     },
     {
         "keywords": ["what", "you", "eat", "like"],
@@ -40,7 +39,7 @@ RULES = [
     },
     {
         "keywords": ["bye", "goodbye", "see"],
-        "response": "Goodbye! 👋",
+        "response": "Goodbye! ",
         "single_response": True
     },
     {
@@ -50,12 +49,12 @@ RULES = [
     },
     {
         "keywords": ["joke", "funny"],
-        "response": "Why don't programmers like nature? It has too many bugs! 😂",
+        "response": "Why don't programmers like nature? It has too many bugs! ",
         "single_response": True
     },
     {
         "keywords": ["weather", "forecast"],
-        "response": "I can't check the weather, but I hope it's nice where you are! ☀️",
+        "response": "I can't check the weather, but I hope it's nice where you are! ",
         "single_response": True
     },
     {
@@ -63,8 +62,7 @@ RULES = [
         "response": unknown(),
         "single_response": True
     },
-    # TODO: creeaza tu un raspuns custom pentru un topic ales
-    # exemmplu: care este culoarea ta preferata?
+
     {
         "keywords": ["favorite", "color"],
         "required": ["color"],
@@ -75,13 +73,10 @@ RULES = [
 
 def message_probability(user_message, keywords, single_response=False, required=[]):
 
-    #TODO: Calculează probabilitatea mesajului message_certainty
-    #pt fiecare cuvant din mesaj care apare in recognised_words
-    #message_certainty este incrementat
+ 
     message_certainty = sum(1 for word in user_message if word in keywords)
     
-    #TODO: Calculează match_ratio ca raportul dintre message_certainty și numărul de cuvinte din keywords
-    #dacă keywords este gol, setăm match_ratio la 0
+
     match_ratio = message_certainty / len(keywords) if keywords else 0
     
     if required:
@@ -97,8 +92,7 @@ def check_all_messages(message):
     best_response = None
 
     for rule in RULES:
-        #TODO: Calculează probabilitatea mesajului pentru fiecare regulă
-        #folosind funcția message_probability definită mai sus
+     
         prob = message_probability(
             message,
             rule["keywords"],
@@ -106,36 +100,25 @@ def check_all_messages(message):
             rule.get("required", [])
         )
 
-        #TODO: dacă prob este mai mare decât highest_prob,
-        # actualizează best_response și highest_prob
+      
         if prob > highest_prob:
             highest_prob = prob
             best_response = rule["response"]
 
-    # Dacă best_response e funcție, o apelezi
+  
     if callable(best_response):
         return best_response()
     
-    #TODO: returneaza raspunsul, fie cel de eroare, fie cel gasit 
+
     return best_response if highest_prob > 0 else unknown()
 
 def get_response(user_input):
-    #TODO: Verifică dacă user_input este gol sau conține doar spații
+  
     if not user_input or user_input.strip() == "":
         return "Please enter a message."
 
-    #TODO: apeleaza functia split pentru a împărți mesajul în cuvinte 
+
     split_message = re.split(r'\s+|[,;?.-]\s*', user_input.lower())
     
-    # apoi returneaza rezultatul obtinut folosind check_all_messages pentru a verifica mesajul
-    return check_all_messages(split_message)
 
-# Ce inseamna \s+|[,;?.-]\s*?
-# \s+ înseamnă unul sau mai multe spații albe (inclusiv tab-uri și linii noi)
-# | este operatorul "sau" în expresiile regulate
-# [,;?.-] înseamnă oricare dintre caracterele specificate (
-# virgulă, punct și virgulă, punct, semn de întrebare sau cratimă)
-# \s* înseamnă zero sau mai multe spații albe după aceste caractere
-# deci, expresia întreagă împarte mesajul în cuvinte folosind spațiile albe și semnele de punctuație specificate
-# de exemplu, "Hello, world! How are you?" va fi împărțit în
-# ["hello", "world", "how", "are", "you"]
+    return check_all_messages(split_message)
