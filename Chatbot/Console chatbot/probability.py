@@ -14,7 +14,7 @@ RULES = [
     {
         "keywords": ["what", "is", "your", "name"],
         "required": ["name"],
-        "response": "I'm CodePal, your friendly chatbot 🤖"
+        "response": "I'm CodePal, your friendly chatbot "
     },
     {
         "keywords": ["i", "love", "code", "palace"],
